@@ -13,7 +13,7 @@ import imagePlaceholder from "@/public/image-placeholder.png";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const imageStyles = [
   "no preference in style",
@@ -52,41 +52,57 @@ export default function Home() {
   const [steps, setSteps] = useState(3);
   const [imageStyle, setImageStyle] = useState("");
   const [customStyle, setCustomStyle] = useState("");
-  const debouncedPrompt = useDebounce(prompt, 300);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { data: image, isFetching } = useQuery({
+  // Create a memoized object that includes all the parameters that should trigger a debounce
+  const debouncedParams = useMemo(() => ({
+    prompt,
+    width,
+    height,
+    steps,
+    imageStyle,
+    customStyle
+  }), [prompt, width, height, steps, imageStyle, customStyle]);
+
+  // Debounce the entire params object
+  const debouncedValues = useDebounce(debouncedParams, 750);
+
+  const { data: image, isFetching, refetch } = useQuery({
     placeholderData: (previousData) => previousData,
-    queryKey: [debouncedPrompt, width, height, steps, imageStyle, customStyle],
+    queryKey: [debouncedValues],
     queryFn: async () => {
+      setIsLoading(true);
       let res = await fetch("/api/generateImages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
-          prompt, 
-          userAPIKey, 
-          width, 
-          height, 
-          steps, 
-          imageStyle: imageStyle === "other" ? customStyle : imageStyle 
+          ...debouncedValues,
+          userAPIKey,
+          imageStyle: debouncedValues.imageStyle === "other" ? debouncedValues.customStyle : debouncedValues.imageStyle 
         }),
       });
 
       if (!res.ok) {
         throw new Error(await res.text());
       }
+      setIsLoading(false);
       return (await res.json()) as {
         b64_json: string;
         timings: { inference: number };
       };
     },
-    enabled: !!debouncedPrompt.trim(),
+    enabled: false,
     staleTime: Infinity,
     retry: false,
   });
 
-  let isDebouncing = prompt !== debouncedPrompt;
+  useEffect(() => {
+    if (debouncedValues.prompt.trim()) {
+      refetch();
+    }
+  }, [debouncedValues, refetch]);
 
   const handleDownload = () => {
     if (image && image.b64_json) {
@@ -149,7 +165,7 @@ export default function Home() {
                 className="w-full resize-none border-border bg-card text-card-foreground px-4 py-3 text-base placeholder-muted-foreground rounded-lg shadow-sm transition-shadow focus:shadow-md"
               />
               <div
-                className={`${isFetching || isDebouncing ? "flex" : "hidden"} absolute bottom-3 right-3 items-center justify-center`}
+                className={`${isLoading ? "flex" : "hidden"} absolute bottom-3 right-3 items-center justify-center`}
               >
                 <Spinner className="size-4" />
               </div>
@@ -255,7 +271,7 @@ export default function Home() {
                 height={height}
                 src={`data:image/png;base64,${image.b64_json}`}
                 alt=""
-                className={`${isFetching ? "animate-pulse" : ""} max-w-full rounded-lg object-cover shadow-lg transition-shadow duration-300 hover:shadow-xl`}
+                className={`${isLoading ? "animate-pulse" : ""} max-w-full rounded-lg object-cover shadow-lg transition-shadow duration-300 hover:shadow-xl`}
               />
               <Button
                 onClick={handleDownload}
