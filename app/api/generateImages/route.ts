@@ -26,14 +26,29 @@ if (process.env.UPSTASH_REDIS_REST_URL) {
 
 const client = new Together(options);
 
+const roundToNearest16 = (value: number) => Math.round(value / 16) * 16;
+
 export async function POST(req: Request) {
   let json = await req.json();
-  let { prompt, userAPIKey } = z
+  let { prompt, userAPIKey, width, height, steps, imageStyle } = z
     .object({
       prompt: z.string(),
       userAPIKey: z.string().optional(),
+      width: z.number().min(16).max(1440).default(512),
+      height: z.number().min(16).max(1440).default(512),
+      steps: z.number().min(1).max(10).default(3),
+      imageStyle: z.string().optional(),
     })
     .parse(json);
+
+  // Ensure width and height are multiples of 16
+  width = roundToNearest16(width);
+  height = roundToNearest16(height);
+
+  // Modify the prompt to include the image style if provided
+  if (imageStyle) {
+    prompt = `${imageStyle} style: ${prompt}`;
+  }
 
   if (userAPIKey) {
     client.apiKey = userAPIKey;
@@ -69,9 +84,9 @@ export async function POST(req: Request) {
     response = await client.images.create({
       prompt,
       model: "black-forest-labs/FLUX.1-schnell",
-      width: 1024,
-      height: 768,
-      steps: 3,
+      width,
+      height,
+      steps,
       // @ts-expect-error - this is not typed in the API
       response_format: "base64",
     });
