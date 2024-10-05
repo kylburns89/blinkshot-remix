@@ -85,21 +85,16 @@ export default function Home() {
   };
 
   return (
-    <div className="flex h-full flex-col px-5">
-      <header className="flex justify-center pt-20 md:justify-end md:pt-3">
-        <div className="absolute left-1/2 top-6 -translate-x-1/2">
-          <a href="https://www.dub.sh/together-ai" target="_blank">
-            <Logo />
-          </a>
-          <p className="text-xs text-gray-300 mt-1">Forked version of Blinkshot</p>
-        </div>
+    <div className="flex h-full flex-col px-5 bg-background text-foreground">
+      <header className="flex justify-between items-center pt-6 pb-6 bg-primary text-primary-foreground">
+        <Logo className="w-48 h-auto" />
         <div>
-          <label className="text-xs text-gray-200">
+          <label className="text-xs">
             [Optional] Add your{" "}
             <a
               href="https://api.together.xyz/settings/api-keys"
               target="_blank"
-              className="underline underline-offset-4 transition hover:text-blue-500"
+              className="underline underline-offset-4 transition hover:text-secondary"
             >
               Together API Key
             </a>{" "}
@@ -108,7 +103,7 @@ export default function Home() {
             placeholder="API Key"
             type="password"
             value={userAPIKey}
-            className="mt-1 bg-gray-400 text-gray-200 placeholder:text-gray-300"
+            className="mt-1 bg-background text-foreground placeholder:text-muted-foreground"
             onChange={(e) => setUserAPIKey(e.target.value)}
           />
         </div>
@@ -125,7 +120,7 @@ export default function Home() {
                 required
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                className="w-full resize-none border-gray-300 border-opacity-50 bg-gray-400 px-4 text-base placeholder-gray-300"
+                className="w-full resize-none border-border bg-card text-card-foreground px-4 text-base placeholder-muted-foreground"
               />
               <div
                 className={`${isFetching || isDebouncing ? "flex" : "hidden"} absolute bottom-3 right-3 items-center justify-center`}
@@ -135,7 +130,7 @@ export default function Home() {
             </div>
             <div className="mt-4 space-y-4">
               <div>
-                <label className="text-sm text-gray-200">Width: {width}px</label>
+                <label className="text-sm font-medium">Width: {width}px</label>
                 <Slider
                   min={64}
                   max={1408}
@@ -146,7 +141,7 @@ export default function Home() {
                 />
               </div>
               <div>
-                <label className="text-sm text-gray-200">Height: {height}px</label>
+                <label className="text-sm font-medium">Height: {height}px</label>
                 <Slider
                   min={64}
                   max={1408}
@@ -157,7 +152,7 @@ export default function Home() {
                 />
               </div>
               <div>
-                <label className="text-sm text-gray-200">Steps: {steps}</label>
+                <label className="text-sm font-medium">Steps: {steps}</label>
                 <Slider
                   min={1}
                   max={10}
@@ -168,7 +163,7 @@ export default function Home() {
                 />
               </div>
               <div>
-                <label className="text-sm text-gray-200">Image Style</label>
+                <label className="text-sm font-medium">Image Style</label>
                 <Select value={imageStyle} onValueChange={setImageStyle}>
                   <SelectTrigger className="mt-2 w-full">
                     <SelectValue placeholder="Select an image style" />
@@ -184,13 +179,13 @@ export default function Home() {
               </div>
               {imageStyle === "other" && (
                 <div>
-                  <label className="text-sm text-gray-200">Custom Style</label>
+                  <label className="text-sm font-medium">Custom Style</label>
                   <Input
                     type="text"
                     placeholder="Enter custom style..."
                     value={customStyle}
                     onChange={(e) => setCustomStyle(e.target.value)}
-                    className="mt-2 w-full bg-gray-400 text-gray-200 placeholder:text-gray-300"
+                    className="mt-2 w-full bg-card text-card-foreground placeholder:text-muted-foreground"
                   />
                 </div>
               )}
@@ -202,12 +197,12 @@ export default function Home() {
       <div className="flex w-full grow flex-col items-center justify-center pb-8 pt-4 text-center">
         {!image || !prompt ? (
           <div className="max-w-xl md:max-w-4xl lg:max-w-3xl">
-            <p className="text-xl font-semibold text-gray-200 md:text-3xl lg:text-4xl">
-              Generate images in real-time (Forked Version)
+            <p className="text-xl font-semibold md:text-3xl lg:text-4xl text-primary">
+              Generate images in real-time (Remixed Version)
             </p>
-            <p className="mt-4 text-balance text-sm text-gray-300 md:text-base lg:text-lg">
+            <p className="mt-4 text-balance text-sm md:text-base lg:text-lg">
               Enter a prompt and generate images in milliseconds as you type.
-              Powered by Flux on Together AI. This is a forked version of the original Blinkshot project.
+              Powered by Flux on Together AI. This is a remixed version of the original Blinkshot project.
             </p>
           </div>
         ) : (
@@ -224,7 +219,7 @@ export default function Home() {
               />
               <Button
                 onClick={handleDownload}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 Download Image
               </Button>
@@ -233,13 +228,18 @@ export default function Home() {
         )}
       </div>
 
-      <footer className="mt-16 w-full items-center pb-10 text-center text-gray-300 md:mt-4 md:flex md:justify-between md:pb-5 md:text-xs lg:text-sm">
+      <div className="my-8 p-6 bg-accent text-accent-foreground rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold mb-4">New Feature Showcase</h2>
+        <p>This section demonstrates the new accent color in our updated theme. It's perfect for highlighting important information or new features in your application.</p>
+      </div>
+
+      <footer className="mt-16 w-full items-center pb-10 text-center md:mt-4 md:flex md:justify-between md:pb-5 md:text-xs lg:text-sm">
         <p>
           Powered by{" "}
           <a
             href="https://www.dub.sh/together-ai"
             target="_blank"
-            className="underline underline-offset-4 transition hover:text-blue-500"
+            className="underline underline-offset-4 transition hover:text-secondary"
           >
             Together.ai
           </a>{" "}
@@ -247,7 +247,7 @@ export default function Home() {
           <a
             href="https://dub.sh/together-flux"
             target="_blank"
-            className="underline underline-offset-4 transition hover:text-blue-500"
+            className="underline underline-offset-4 transition hover:text-secondary"
           >
             Flux
           </a>
@@ -255,11 +255,11 @@ export default function Home() {
 
         <div className="mt-8 flex items-center justify-center md:mt-0 md:justify-between md:gap-6">
           <p className="hidden whitespace-nowrap md:block">
-            Forked from{" "}
+            Remixed from{" "}
             <a
               href="https://github.com/Nutlope/blinkshot"
               target="_blank"
-              className="underline underline-offset-4 transition hover:text-blue-500"
+              className="underline underline-offset-4 transition hover:text-secondary"
             >
               Nutlope's Blinkshot
             </a>
