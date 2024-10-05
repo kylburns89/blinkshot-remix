@@ -294,7 +294,7 @@ export default function Home() {
               target="_blank"
               className="underline underline-offset-4 transition hover:text-secondary"
             >
-              Nutlope's Blinkshot
+              Nutlope&apos;s Blinkshot
             </a>
           </p>
 
