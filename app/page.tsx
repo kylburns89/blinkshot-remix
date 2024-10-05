@@ -16,6 +16,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 const imageStyles = [
+  "no preference in style",
   "pop art",
   "pixel art",
   "cartoon",
@@ -24,7 +25,21 @@ const imageStyles = [
   "photorealism",
   "comics",
   "illustration",
-  // "other"
+  "watercolor",
+  "oil painting",
+  "papercraft",
+  "marker illustration",
+  "risograph",
+  "high key",
+  "low key",
+  "bokeh",
+  "golden hour"
+];
+
+const samplePrompts = [
+  "A serene landscape with a misty mountain range at sunrise",
+  "A futuristic cityscape with flying cars and neon lights",
+  "A whimsical treehouse in an enchanted forest with magical creatures"
 ];
 
 const roundToNearest64 = (value: number) => Math.round(value / 64) * 64;
@@ -84,12 +99,16 @@ export default function Home() {
     }
   };
 
+  const handleSamplePrompt = (samplePrompt: string) => {
+    setPrompt(samplePrompt);
+  };
+
   return (
-    <div className="flex h-full flex-col px-5 bg-background text-foreground">
-      <header className="flex justify-between items-center pt-6 pb-6 bg-primary text-primary-foreground">
-        <Logo className="w-48 h-auto" />
-        <div>
-          <label className="text-xs">
+    <div className="flex h-full flex-col px-5 bg-background text-foreground font-geist">
+      <header className="flex justify-between items-center py-6 bg-primary text-primary-foreground rounded-b-lg shadow-md animate-fade-in">
+        <Logo className="w-48 h-auto text-background" />
+        <div className="max-w-xs">
+          <label className="text-xs font-medium">
             [Optional] Add your{" "}
             <a
               href="https://api.together.xyz/settings/api-keys"
@@ -109,8 +128,8 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="flex justify-center">
-        <form className="mt-10 w-full max-w-lg">
+      <div className="flex justify-center mt-10">
+        <form className="w-full max-w-2xl animate-slide-in">
           <fieldset>
             <div className="relative">
               <Textarea
@@ -120,7 +139,7 @@ export default function Home() {
                 required
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                className="w-full resize-none border-border bg-card text-card-foreground px-4 text-base placeholder-muted-foreground"
+                className="w-full resize-none border-border bg-card text-card-foreground px-4 py-3 text-base placeholder-muted-foreground rounded-lg shadow-sm transition-shadow focus:shadow-md"
               />
               <div
                 className={`${isFetching || isDebouncing ? "flex" : "hidden"} absolute bottom-3 right-3 items-center justify-center`}
@@ -128,7 +147,21 @@ export default function Home() {
                 <Spinner className="size-4" />
               </div>
             </div>
-            <div className="mt-4 space-y-4">
+            <div className="mt-3 flex justify-start space-x-2">
+              {samplePrompts.map((samplePrompt, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleSamplePrompt(samplePrompt)}
+                  className="text-xs"
+                  title={samplePrompt}
+                >
+                  {samplePrompt.slice(0, 20)}...
+                </Button>
+              ))}
+            </div>
+            <div className="mt-6 space-y-5">
               <div>
                 <label className="text-sm font-medium">Width: {width}px</label>
                 <Slider
@@ -194,19 +227,19 @@ export default function Home() {
         </form>
       </div>
 
-      <div className="flex w-full grow flex-col items-center justify-center pb-8 pt-4 text-center">
+      <div className="flex w-full grow flex-col items-center justify-center pb-8 pt-8 text-center">
         {!image || !prompt ? (
-          <div className="max-w-xl md:max-w-4xl lg:max-w-3xl">
-            <p className="text-xl font-semibold md:text-3xl lg:text-4xl text-primary">
-              Generate images in real-time (Remixed Version)
-            </p>
-            <p className="mt-4 text-balance text-sm md:text-base lg:text-lg">
+          <div className="max-w-xl md:max-w-4xl lg:max-w-3xl animate-fade-in">
+            <h1 className="text-3xl font-bold md:text-4xl lg:text-5xl text-primary mb-4">
+              Generate images in real-time
+            </h1>
+            <p className="mt-4 text-balance text-lg md:text-xl lg:text-2xl text-muted-foreground">
               Enter a prompt and generate images in milliseconds as you type.
-              Powered by Flux on Together AI. This is a remixed version of the original Blinkshot project.
+              Powered by Flux on Together AI.
             </p>
           </div>
         ) : (
-          <div className="mt-4 flex w-full max-w-4xl justify-center">
+          <div className="mt-8 flex w-full max-w-4xl justify-center animate-fade-in">
             <div className="relative group">
               <Image
                 placeholder="blur"
@@ -215,11 +248,11 @@ export default function Home() {
                 height={height}
                 src={`data:image/png;base64,${image.b64_json}`}
                 alt=""
-                className={`${isFetching ? "animate-pulse" : ""} max-w-full rounded-lg object-cover shadow-sm shadow-black`}
+                className={`${isFetching ? "animate-pulse" : ""} max-w-full rounded-lg object-cover shadow-lg transition-shadow duration-300 hover:shadow-xl`}
               />
               <Button
                 onClick={handleDownload}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary text-primary-foreground hover:bg-primary/90"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-accent text-accent-foreground hover:bg-accent/90"
               >
                 Download Image
               </Button>
@@ -228,12 +261,12 @@ export default function Home() {
         )}
       </div>
 
-      <div className="my-8 p-6 bg-accent text-accent-foreground rounded-lg shadow-md">
+      <div className="my-12 p-8 bg-accent text-accent-foreground rounded-lg shadow-lg animate-slide-in">
         <h2 className="text-2xl font-bold mb-4">New Feature Showcase</h2>
-        <p>This section demonstrates the new accent color in our updated theme. It's perfect for highlighting important information or new features in your application.</p>
+        <p className="text-lg">This remixed version adds height and width sliders, a step slider, an image style selection, and a download button on image hover.</p>
       </div>
 
-      <footer className="mt-16 w-full items-center pb-10 text-center md:mt-4 md:flex md:justify-between md:pb-5 md:text-xs lg:text-sm">
+      <footer className="mt-16 w-full items-center pb-10 text-center md:mt-4 md:flex md:justify-between md:pb-5 md:text-sm lg:text-base">
         <p>
           Powered by{" "}
           <a
@@ -265,12 +298,12 @@ export default function Home() {
             </a>
           </p>
 
-          <div className="flex gap-6 md:gap-2">
+          <div className="flex gap-6 md:gap-4">
             <a href="https://github.com/Nutlope/blinkshot" target="_blank">
               <Button
                 variant="outline"
                 size="sm"
-                className="inline-flex items-center gap-2"
+                className="inline-flex items-center gap-2 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
               >
                 <GithubIcon className="size-4" />
                 Original GitHub
@@ -280,7 +313,7 @@ export default function Home() {
               <Button
                 size="sm"
                 variant="outline"
-                className="inline-flex items-center gap-2"
+                className="inline-flex items-center gap-2 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
               >
                 <XIcon className="size-3" />
                 Original Creator

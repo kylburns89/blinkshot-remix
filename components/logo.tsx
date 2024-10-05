@@ -35,10 +35,10 @@ export default function Logo(props: ComponentProps<"svg">) {
         fontFamily="Arial, sans-serif"
         fontSize="16"
         fontWeight="bold"
-        fill="var(--primary-foreground)"
+        fill="currentColor"
         textAnchor="middle"
       >
-        Blinkshot Remix
+        BlinkShot Remix
       </text>
     </svg>
   );
