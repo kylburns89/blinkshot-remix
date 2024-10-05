@@ -1,5 +1,5 @@
 <a href="https://www.blinkshot.io">
-  <img alt="Blinkshot (Forked Version)" src="![image](https://github.com/user-attachments/assets/07585ebd-5ad9-465f-8ad7-c106f1e8d43c)
+  <img alt="Blinkshot (Forked Version)" src="https://github.com/user-attachments/assets/07585ebd-5ad9-465f-8ad7-c106f1e8d43c
 ">
   <h1 align="center">BlinkShot (Forked Version)</h1>
 </a>
