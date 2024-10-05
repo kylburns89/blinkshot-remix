@@ -99,8 +99,15 @@ export default function Home() {
     }
   };
 
-  const handleSamplePrompt = (samplePrompt: string) => {
+  const handleSamplePrompt = (e: React.MouseEvent, samplePrompt: string) => {
+    e.preventDefault();
     setPrompt(samplePrompt);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // The form submission is prevented, but we don't need to do anything else here
+    // because the useQuery hook will automatically trigger when the prompt changes
   };
 
   return (
@@ -129,7 +136,7 @@ export default function Home() {
       </header>
 
       <div className="flex justify-center mt-10">
-        <form className="w-full max-w-2xl animate-slide-in">
+        <form onSubmit={handleSubmit} className="w-full max-w-2xl animate-slide-in">
           <fieldset>
             <div className="relative">
               <Textarea
@@ -153,7 +160,7 @@ export default function Home() {
                   key={index}
                   variant="outline"
                   size="sm"
-                  onClick={() => handleSamplePrompt(samplePrompt)}
+                  onClick={(e) => handleSamplePrompt(e, samplePrompt)}
                   className="text-xs"
                   title={samplePrompt}
                 >
