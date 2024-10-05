@@ -1,5 +1,6 @@
 <a href="https://www.blinkshot.io">
-  <img alt="Blinkshot (Forked Version)" src="./public/og-image.png">
+  <img alt="Blinkshot (Forked Version)" src="![image](https://github.com/user-attachments/assets/07585ebd-5ad9-465f-8ad7-c106f1e8d43c)
+">
   <h1 align="center">BlinkShot (Forked Version)</h1>
 </a>
 
@@ -15,9 +16,9 @@
 
 This is a forked version of the original BlinkShot project. The main changes in this fork include:
 
-- Updated branding to clearly indicate it's a forked version
-- Modified UI text to reflect the forked status
-- Added attribution to the original creator in the footer
+- Updated theme
+- Added download on hover button
+- Added sample prompts
 - Implemented controls for image resolution and generation steps
 
 ## Tech stack
@@ -30,31 +31,13 @@ This is a forked version of the original BlinkShot project. The main changes in 
 
 ## Cloning & running
 
-1. Clone this forked repo: `git clone https://github.com//blinkshot-fork`
+1. Clone this forked repo: `git clone https://github.com/kylburns89/blinkshot`
 2. Create a `.env.local` file and add your [Together AI API key](https://www.dub.sh/together-ai): `TOGETHER_API_KEY=`
 3. Run `npm install` and `npm run dev` to install dependencies and run locally
 
-## Differences from the Original
-
-- The UI now clearly indicates that this is a forked version
-- Attribution to the original creator is prominently displayed
-- Users can now adjust the image resolution and number of generation steps
-- A download button appears when hovering over the generated image
-
 ## Future Tasks
 
-- [x] Update branding to indicate forked status
-- [x] Add attribution to original creator
-- [x] Let people play around with resolutions
-- [x] Let people play around with steps
-- [x] On hover, have a download button
-- [ ] Add a CTA to fork the code on GitHub
-- [ ] Add a description of the app to the footer
-- [ ] Add themes
-
-## Contributing
-
-Contributions to this forked version are welcome. Please make sure to discuss any major changes via issues before submitting a pull request.
+TBD
 
 ## Acknowledgements
 
