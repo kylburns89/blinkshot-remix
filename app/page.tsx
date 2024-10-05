@@ -67,7 +67,7 @@ export default function Home() {
   // Debounce the entire params object
   const debouncedValues = useDebounce(debouncedParams, 750);
 
-  const { data: image, isFetching, refetch } = useQuery({
+  const { data: image, refetch } = useQuery({
     placeholderData: (previousData) => previousData,
     queryKey: [debouncedValues],
     queryFn: async () => {
