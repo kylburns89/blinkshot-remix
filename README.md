@@ -8,6 +8,7 @@
 </p>
 
 <p align="center">
+  My forked version <a href="https://blinkshot-ten.vercel.app/">Blinkshot Remix</a>
   Original project by <a href="https://github.com/Nutlope">Nutlope</a>
 </p>
 
