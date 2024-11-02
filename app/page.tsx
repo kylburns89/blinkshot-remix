@@ -132,7 +132,7 @@ export default function Home() {
         <Logo className="w-48 h-auto text-background" />
         <div className="max-w-xs">
           <label className="text-xs font-medium">
-            [Optional] Add your{" "}
+            Please add your{" "}
             <a
               href="https://api.together.xyz/settings/api-keys"
               target="_blank"
